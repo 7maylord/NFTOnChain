@@ -1,13 +1,12 @@
 # Sample Hardhat Project
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Deploying contracts with account: 0xbE3171d0e36a012319a5C76bCcD71250499b1C16
+ERC721 token deployed at: 0xaec66e26188fC90Dc1Fb67016b9A42a4DfC6C987
+Waiting for transactions to confirm...
+Verifying ERC721 token contract...
+Successfully submitted source code for contract
+contracts/ERC721.sol:NFTOnChain at 0xaec66e26188fC90Dc1Fb67016b9A42a4DfC6C987
+for verification on the block explorer. Waiting for verification result...
 
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+Successfully verified contract NFTOnChain on the block explorer.
+https://sepolia.etherscan.io/address/0xaec66e26188fC90Dc1Fb67016b9A42a4DfC6C987#code

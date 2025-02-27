@@ -9,20 +9,29 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract NFTOnChain is ERC721, Ownable {
     using Strings for uint256;
     uint256 private _tokenIdCounter;
+    uint256 public immutable MAX_SUPPLY;
 
     error TokenNotFound();
+    error MaxSupplyReached();
 
-    constructor() ERC721("MayNFT", "NFT") Ownable(msg.sender) {}
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        uint256 maxSupply_
+    ) ERC721(name_, symbol_) Ownable(msg.sender) {
+        MAX_SUPPLY = maxSupply_;
+    }
 
     function mint() public {
+        if (_tokenIdCounter >= MAX_SUPPLY) revert MaxSupplyReached();
         _tokenIdCounter += 1;
         _safeMint(msg.sender, _tokenIdCounter);
-    }
+    }   
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
         if(ownerOf(tokenId) == address(0)) revert TokenNotFound();
 
-        string memory name = string(abi.encodePacked("MayNFT #", tokenId.toString()));
+        string memory name = string(abi.encodePacked(name(), " #", tokenId.toString()));
         string memory description = "This is an on-chain NFT";
         string memory image = generateBase64Image();
 

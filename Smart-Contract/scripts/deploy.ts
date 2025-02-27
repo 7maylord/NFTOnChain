@@ -9,10 +9,21 @@ async function main() {
 
     // Deploy ERC721 Token
     const NFT = await ethers.getContractFactory("NFTOnChain");
-    const nft = await NFT.deploy();
+
+    const name = "MayNFT";
+    const symbol = "NFT";
+    const maxSupply = 10000;
+
+    const nft = await NFT.deploy(name, symbol, maxSupply);
     await nft.waitForDeployment();
     const nftAddress = await nft.getAddress();
     console.log(`ERC721 token deployed at: ${nftAddress}`);
+
+    // Mint the first token to the deployer
+    console.log("Minting the first NFT to the deployer...");
+    const mintTx = await nft.mint(); // Calling the mint function
+    await mintTx.wait(); // Wait for the mint transaction to be mined
+    console.log("Minted the first NFT to the deployer at:", mintTx.hash);
 
     // Wait for a few confirmations before verification
     if (network.name !== "hardhat") {
@@ -23,6 +34,7 @@ async function main() {
             console.log("Verifying ERC721 token contract...");
             await run("verify:verify", {
                 address: nftAddress,
+                constructorArguments: [name, symbol, maxSupply],
             });
             console.log("ERC721 token verified successfully!");
         } catch (error) {
@@ -30,8 +42,8 @@ async function main() {
         }
 
         // // Check owner's balance
-        // const ownerBalance = await token.balanceOf(deployer.address);
-        // console.log(`Owner's balance: ${ethers.formatUnits(ownerBalance, 18)} MTK`);
+        // const ownerBalance = await nft.balanceOf(deployer.address); // Fetch the minting balance
+        // console.log(`Deployer's balance: ${ethers.formatUnits(ownerBalance, 18)} NFT(s)`);
     }
 }
 
